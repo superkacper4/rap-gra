@@ -4,12 +4,12 @@ import { NativeRouter, Route, Switch } from 'react-router-native';
 import { ThemeProvider } from 'styled-components';
 import AppContext from 'rap-gra/context/context';
 import { theme } from 'rap-gra/theme/mainTheme';
-import { StartScreen, Home, Songs, Label, Concerts } from 'rap-gra/views';
+import { StartScreen, Home, Songs, Label, Concerts, BestSongs } from 'rap-gra/views';
 import AllSongs from 'rap-gra/views/Songs/AllSongs';
 import AllRecords from 'rap-gra/views/Songs/AllRecords';
 import MainTemplate from 'rap-gra/templates/MainTemplate';
 import { path } from 'rap-gra/constants/routes';
-
+import constList from 'rap-gra/constants/constList';
 /* eslint-disable */
 
 class App extends React.Component {
@@ -30,20 +30,22 @@ class App extends React.Component {
     yourLabel: '',
     yourRapers: [],
     // songs
-
     songs: [], // Piosenki
-    songsL: 0, // Ilość piosenek
-    subjects: ['Miłość', 'Wolność', 'Ziomki', 'Przyjaźń'], // Tematy piosenek
-    subL: 0, // Ilość tematów
+    subjects: [], // Tematy piosenek
     records: [], // Płyty
-    recordsL: 0, // Ilość płyt
     // concerts
     concerts: [],
     concertsEnableToPlay: 1,
     // coś innego xD
-    component: this,
     isLoading: true,
+    newSub: {
+      e: 0,
+      l: 0,
+    },
+    bestSong: {},
+    bestList: constList,
   };
+
   setStats = object => {
     const { fans, flow, style, rhymes, reputation } = object.stats;
     this.setState(prevState => ({
@@ -55,6 +57,50 @@ class App extends React.Component {
         rhymes: prevState.stats.rhymes + rhymes,
         reputation: prevState.stats.reputation + reputation,
       },
+    }));
+  };
+
+  setBestSong = song => {
+    const { bestSong } = this.state;
+    if (bestSong.views === -1) {
+      this.setState({ bestSong: song });
+      AsyncStorage.setItem('bestSong', JSON.stringify(song));
+    } else if (song.views > bestSong.views) {
+      this.setState({ bestSong: song });
+      AsyncStorage.setItem('bestSong', JSON.stringify(song));
+    }
+
+    // let max = 0;
+    // console.log('szukam!');
+    // songs.forEach(({ views, rating }) => (views > max && rating >= 9 ? (max = views) : null));
+    // if (max != 0) {
+    //   const song = [...songs.filter(({ views }) => max === views)];
+    //   console.log(song[0]);
+    //   this.setState({ bestSong: song[0] });
+    // }
+    // return null;
+  };
+
+  changeBestList = (song, index) => {
+    const arr = [...constList];
+    arr.splice(index, 0, song);
+    arr.splice(10, 1);
+    arr.forEach((item, i) => (item.place = i + 1));
+    this.setState({
+      bestList: arr,
+    });
+  };
+
+  setCash = cash => {
+    this.setState({
+      cash,
+    });
+  };
+
+  setNewSub = sub => {
+    this.setState(prevState => ({
+      subjects: [...prevState.subjects, sub],
+      newSub: { e: 0, l: 0 },
     }));
   };
 
@@ -71,6 +117,12 @@ class App extends React.Component {
       const style = await AsyncStorage.getItem('style');
       const rhymes = await AsyncStorage.getItem('rhymes');
       const concerts = await AsyncStorage.getItem('concerts_array');
+      const sub = await AsyncStorage.getItem(`subjects`);
+      const pic = await AsyncStorage.getItem('picture');
+      const songs = await AsyncStorage.getItem('songs');
+      const records = await AsyncStorage.getItem('records');
+      const newSubCount = await AsyncStorage.getItem('newSubCount');
+      const bestSong = await AsyncStorage.getItem('bestSong');
       const yourLabel = await AsyncStorage.getItem('yourLabel');
       const yourRapers = await AsyncStorage.getItem('yourRapers_array');
 
@@ -83,6 +135,12 @@ class App extends React.Component {
         style !== null &&
         rhymes !== null &&
         rep !== null &&
+        concerts !== null &&
+        sub !== null &&
+        pic !== null &&
+        songs !== null &&
+        records !== null &&
+        bestSong !== null &&
         concerts !== null
         // yourLabel !== null
       ) {
@@ -102,68 +160,27 @@ class App extends React.Component {
           yourLabel: yourLabel,
           yourRapers: JSON.parse(yourRapers),
           concerts: JSON.parse(concerts),
+          subjects: JSON.parse(sub),
+          pic: pic,
+          songs: JSON.parse(songs),
+          records: JSON.parse(records),
+          newSub: JSON.parse(newSubCount),
+          bestSong: JSON.parse(bestSong),
         });
-      }
 
-      const subL = AsyncStorage.getItem(`subjectsL`);
-      this.setState({ subL });
-
-      let sub;
-      // pętla po wszystkich tematach(minumum 4 podstawowe)
-      for (let i = 4; i < subL; i++) {
-        //Pobieranie tematów z AS
-        sub = await AsyncStorage.getItem(`subject${i}`);
-        this.setState({ subjects: [...this.state.subjects, sub] });
-      }
-
-      await AsyncStorage.getItem('picture', (err, result) => {
-        this.setState({ pic: result });
-      });
-
-      // //Wstawianie tematów do AS
-      // for (let i = 1; i <= subL; i++) {
-      //   AsyncStorage.setItem(`subject${i}`, subjects[i - 1]);
-      // }
-
-      //Pobranie ilości piosenek z AS
-      const songsL = await AsyncStorage.getItem('songsL');
-      //Ustalenie stanu
-      this.setLength(songsL);
-      let song;
-      this.setState({ songs: [], records: [] });
-      //Pętla po wszystkich piosenkach
-      for (let i = 1; i <= songsL; i++) {
-        //Pobranie piosenek z AS
-        song = await AsyncStorage.getItem(`song${i}`);
-        this.setState({ songs: [...this.state.songs, JSON.parse(song)] });
-      }
-      //Pobranie ilości płyt z AS
-      const recL = await AsyncStorage.getItem('recordsL');
-
-      this.setLengthRec(recL);
-
-      let rec;
-      //Pętla po wszystkich płytach
-      for (let i = 1; i <= recL; i++) {
-        //Pobranie płyt z AS
-        rec = await AsyncStorage.getItem(`record${i}`);
-        this.setState({ records: [...this.state.records, JSON.parse(rec)] });
+        this.changeBestList(JSON.parse(bestSong), JSON.parse(bestSong).place - 1);
       }
     } catch (error) {}
     this.setState({ isLoading: false });
+
     // AsyncStorage.setItem('songsL', '0');
     // AsyncStorage.setItem('recordsL', '0');
     // Pobranie ilości tematów z AS
   };
 
   componentDidMount() {
-    // AS -> AsyncStorage
-    let songL; // Ilość piosenek
-    let subL; // Ilość tematów piosenek
-    let recL; // Ilość płyt
-    const { subjects } = this.state;
-
     this.retrieveData(); // wczytuje statystki i label
+    // this.setBestSong();
   }
 
   deleteAndAddSong = (id, song) => {
@@ -175,29 +192,21 @@ class App extends React.Component {
   };
 
   //Ustalenie ilości piosenek
-  setLength = result => {
-    this.setState({ songsL: result });
-  };
 
   //Dodanie piosenki
   setSong = song => {
     this.setState({
-      songsL: this.state.songsL + 1,
       songs: [...this.state.songs, song],
     });
   };
 
   //Ustalenie ilości płyt
-  setLengthRec = result => {
-    this.setState({ recordsL: result });
-  };
 
   //Dodanie płyty
   setRecord = record => {
-    this.setState({
-      recordsL: this.state.recordsL + 1,
-      records: [...this.state.records, record],
-    });
+    this.setState(prevState => ({
+      records: [...prevState.records, record],
+    }));
   };
 
   // dołączanie do wytwórnii => obsługiwane jest w Label i LabelDetails
@@ -236,23 +245,48 @@ class App extends React.Component {
   };
 
   render() {
-    const { HOME, LABEL, SONGS, ALLSONGS, ALLRECORDS, CONCERTS, STARTSCREEN } = path;
+    const { HOME, LABEL, SONGS, ALLSONGS, ALLRECORDS, CONCERTS, STARTSCREEN, BESTSONGS } = path;
+    const {
+      state,
+      labelFn,
+      setSong,
+      setRecord,
+      testFn,
+      testFn2,
+      setStats,
+      deleteAndAddSong,
+      setCash,
+      retrieveData,
+      setNewSub,
+      setBestSong,
+      changeBestList,
+      setConcertsEnableToPlay,
+      decreaseConcertsEnableToPlay,
+      yourLabelFn,
+      addYourRaper,
+    } = this;
+
     return (
       <NativeRouter>
         <AppContext.Provider
           value={{
-            state: this.state,
-            labelFn: this.labelFn,
-            setSong: this.setSong,
-            setLength: this.setLength,
-            setRecord: this.setRecord,
-            setLengthRec: this.setLengthRec,
-            setStats: this.setStats,
-            deleteAndAddSong: this.deleteAndAddSong,
-            setConcertsEnableToPlay: this.setConcertsEnableToPlay,
-            decreaseConcertsEnableToPlay: this.decreaseConcertsEnableToPlay,
-            yourLabelFn: this.yourLabelFn,
-            addYourRaper: this.addYourRaper,
+            state,
+            labelFn,
+            setSong,
+            setRecord,
+            testFn,
+            testFn2,
+            setStats,
+            deleteAndAddSong,
+            setCash,
+            retrieveData,
+            setNewSub,
+            setBestSong,
+            changeBestList,
+            setConcertsEnableToPlay,
+            decreaseConcertsEnableToPlay,
+            yourLabelFn,
+            addYourRaper,
           }}
         >
           <ThemeProvider theme={theme}>
@@ -260,7 +294,11 @@ class App extends React.Component {
               <Route exact path={STARTSCREEN} component={StartScreen} />
               <MainTemplate>
                 <Route exact path={HOME} component={Home} />
-                <Route exact path={SONGS} component={Songs} />
+                <Route
+                  exact
+                  path={SONGS}
+                  component={() => <Songs songs={this.state.songs} records={this.state.records} />}
+                />
                 <Route exact path={CONCERTS} component={Concerts} />
                 <Route exact path={LABEL} component={Label} />
 
@@ -276,6 +314,17 @@ class App extends React.Component {
                   path={ALLRECORDS}
                   component={() => (
                     <AllRecords records={this.state.records} isLoading={this.state.isLoading} />
+                  )}
+                />
+                <Route
+                  exact
+                  path={BESTSONGS}
+                  component={() => (
+                    <BestSongs
+                      bestSong={this.state.bestSong}
+                      nick={this.state.nick}
+                      bestList={this.state.bestList}
+                    />
                   )}
                 />
               </MainTemplate>

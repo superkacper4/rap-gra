@@ -4,7 +4,7 @@ import { ScrollView, View, Alert, AsyncStorage } from 'react-native';
 import { Title, Button, Paragraph } from 'rap-gra/components';
 import SongItem from 'rap-gra/views/Songs/SongItem';
 import styled from 'styled-components';
-import { checkRec } from 'rap-gra/views/Songs/Functions/checkRec';
+import { checkRec, addNewSubject } from 'rap-gra/views/Songs/Functions';
 
 /* eslint-disable no-plusplus, array-callback-return, consistent-return */
 
@@ -36,38 +36,23 @@ const AddSongRec = ({
   songs,
   rec,
   setRecord,
-  recordsL,
-  setLengthRec,
-  deleteAndAddSong,
+  records,
+  setCash,
+  fans,
+  newSub,
+  subjects,
+  setNewSub,
 }) => {
   const [idActive, setIdActive] = useState([]); // ID aktywnych piosenek
 
   // Funkcja asynchroniczna zapisująca dane płyty
   const storeRec = async object => {
-    const length = recordsL; // ilość płyt pobrana z AS
-
     try {
       // Dodanie płyty na odpowiednie miejsce w AS np. record3
-      await AsyncStorage.setItem(
-        `record${parseInt(length, 10) + 1}`,
-        JSON.stringify(object),
-        () => {
-          // Pobranie tej płyty z AS i dodanie do tablicy w App.
-          AsyncStorage.getItem(`record${parseInt(length, 10) + 1}`, (err, result) => {
-            setRecord(JSON.parse(result));
-          });
-        },
-      );
-    } catch (error) {
-      throw new Error(error);
-    }
-    try {
-      // Dodanie ilości płyt do AS
-      await AsyncStorage.setItem(`recordsL`, `${parseInt(length, 10) + 1}`, () => {
-        // Pobranie ilości płyt z AS i dodanie do stanu w App
-        AsyncStorage.getItem('recordsL', (err, result) => {
-          setLengthRec(result);
-        });
+      await AsyncStorage.setItem(`records`, JSON.stringify([...records, object]));
+      await AsyncStorage.getItem('cash', (err, result) => {
+        AsyncStorage.setItem('cash', `${result * 1 - rec.spend * 1 + object.sold * 20}`);
+        setCash(result * 1 - rec.spend * 1 + object.sold * 20);
       });
     } catch (error) {
       throw new Error(error);
@@ -78,6 +63,7 @@ const AddSongRec = ({
   const handleBack = () => {
     onPress();
     openAddRec();
+    setIdActive([]);
   };
 
   // Zapisanie płyty
@@ -87,21 +73,27 @@ const AddSongRec = ({
       case 'EP':
         if (idActive.length > 10) {
           Alert.alert('(Maksymalna ilość to: 9)Dodałeś za dużo piosenek');
-        } else if (idActive.length >= 6) {
+          return -1;
+        }
+        if (idActive.length >= 6) {
           onPress();
           setId(idActive);
         } else {
           Alert.alert('(Minimalna ilość to: 6)Dodałeś za mało piosenek');
+          return -1;
         }
         break;
       case 'LP':
         if (idActive.length >= 15) {
           Alert.alert('(Maksymalna ilość to: 15)Dodałeś za dużo piosenek');
-        } else if (idActive.length >= 10) {
+          return -1;
+        }
+        if (idActive.length >= 10) {
           onPress();
           setId(idActive);
         } else {
           Alert.alert('(Minimalna ilość to: 10)Dodałeś za mało piosenek');
+          return -1;
         }
         break;
       default:
@@ -121,29 +113,27 @@ const AddSongRec = ({
         i++;
       }
     });
-    for (let j = 0; j < idActive.length; j++) {
-      AsyncStorage.getItem(`song${idActive[j]}`)
-        .then(data => {
-          const newData = { ...JSON.parse(data), used: true };
-          deleteAndAddSong(j, newData);
-          AsyncStorage.setItem(`song${parseInt(idActive[j], 10)}`, JSON.stringify(newData));
-        })
-        .done();
-    }
+    // const songsCopy = songs;
+    // idActive.forEach(id => (songsCopy[id - 1] = { ...songsCopy[id - 1], used: true }));
+    // AsyncStorage.setItem(`songs`, JSON.stringify(songsCopy));
 
-    // Dodanie płyty do AS
-    storeRec(
-      // sprawdzenie piosenki
-      checkRec(
-        {
-          ...rec,
-          activeTitles,
-          activeSubjects,
-          activeRates,
-        },
-        recordsL,
-      ),
+    // sprawdzenie piosenki
+    const recordChecked = checkRec(
+      {
+        ...rec,
+        activeTitles,
+        activeSubjects,
+        activeRates,
+      },
+      records.length,
+      fans,
     );
+    if (subjects.length !== 17) {
+      addNewSubject(newSub, recordChecked.type, subjects, setNewSub);
+    }
+    // Dodanie płyty do AS
+    storeRec(recordChecked);
+    setRecord(recordChecked);
 
     // zresetowanie tablicy
     setIdActive([]);
