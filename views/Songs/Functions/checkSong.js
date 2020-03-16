@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+import constList from 'rap-gra/constants/constList';
 
 const calcRep = rate => {
   if (rate < 1) {
@@ -36,7 +37,7 @@ const calcRate = (best, choice) => {
 };
 
 const setPersonalStats = async object => {
-  const { fans, cash, reputation } = object;
+  const { fans, cash, reputation, stats } = object;
   try {
     await AsyncStorage.getItem(`fans`, (err, result) => {
       AsyncStorage.setItem(`fans`, `${fans * 1 + result * 1}`);
@@ -47,13 +48,21 @@ const setPersonalStats = async object => {
     await AsyncStorage.getItem(`rep`, (err, result) => {
       AsyncStorage.setItem(`rep`, `${reputation * 1 + result * 1}`);
     });
+    await AsyncStorage.getItem(`flow`, (err, result) => {
+      AsyncStorage.setItem(`flow`, `${stats.flow * 1 + result * 1}`);
+    });
+    await AsyncStorage.getItem(`rhymes`, (err, result) => {
+      AsyncStorage.setItem(`rhymes`, `${stats.rhymes * 1 + result * 1}`);
+    });
+    await AsyncStorage.getItem(`style`, (err, result) => {
+      AsyncStorage.setItem(`style`, `${stats.style * 1 + result * 1}`);
+    });
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const checkSong = (song, stats, setStats) => {
-  console.log(stats);
+export const checkSong = (song, stats, setStats, setBestSong, changeBestList, nick) => {
   const { style, bit, rhymes, video } = song.values; // Destrukturyzacja danych o piosence
   // Deklaracja zmiennej bestValues
   const bestValues = {
@@ -68,7 +77,7 @@ export const checkSong = (song, stats, setStats) => {
     rating: 1,
     views: 0,
     cash: 0,
-    place: 200,
+    place: '>200',
     fans: 0,
     id: song.id,
     used: false,
@@ -96,6 +105,71 @@ export const checkSong = (song, stats, setStats) => {
       bestValues.R = 60 + Math.floor(Math.random() * 20 - 10);
       bestValues.B = 80 + Math.floor(Math.random() * 20 - 10);
       break;
+    case 'Alternatywny':
+      bestValues.S = 70 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 10 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 50 + Math.floor(Math.random() * 20 - 10);
+      break;
+    case 'Polityczny':
+      bestValues.S = 30 + Math.floor(Math.random() * 10 - 5);
+      bestValues.R = 80 + Math.floor(Math.random() * 20 - 10);
+      bestValues.B = 30 + Math.floor(Math.random() * 20 - 10);
+      break;
+    case 'Bóg':
+      bestValues.S = 40 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 90 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 30 + Math.floor(Math.random() * 20 - 10);
+      break;
+    case 'Gangsterski':
+      bestValues.S = 40 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 30 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 10 + Math.floor(Math.random() * 10 - 5);
+      break;
+    case 'Życie codzienne':
+      bestValues.S = 30 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 70 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 60 + Math.floor(Math.random() * 10 - 5);
+      break;
+    case 'Podróże':
+      bestValues.S = 50 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 60 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 70 + Math.floor(Math.random() * 10 - 5);
+      break;
+    case 'Siłownia':
+      bestValues.S = 30 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 80 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 40 + Math.floor(Math.random() * 10 - 5);
+      break;
+    case 'Motywacja':
+      bestValues.S = 80 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 60 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 50 + Math.floor(Math.random() * 10 - 5);
+      break;
+    case 'Więzienie':
+      bestValues.S = 30 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 90 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 20 + Math.floor(Math.random() * 10 - 5);
+      break;
+    case 'Policja':
+      bestValues.S = 60 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 80 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 60 + Math.floor(Math.random() * 10 - 5);
+      break;
+    case 'Smutek':
+      bestValues.S = 20 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 70 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 10 + Math.floor(Math.random() * 10 - 5);
+      break;
+    case 'Śmierć':
+      bestValues.S = 10 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 90 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 5 + Math.floor(Math.random() * 10 - 5);
+      break;
+    case 'Chill':
+      bestValues.S = 30 + Math.floor(Math.random() * 20 - 10);
+      bestValues.R = 50 + Math.floor(Math.random() * 10 - 5);
+      bestValues.B = 80 + Math.floor(Math.random() * 10 - 5);
+      break;
     default:
       throw new Error('Błąd');
   }
@@ -103,9 +177,9 @@ export const checkSong = (song, stats, setStats) => {
   checkedSong.rating =
     Math.round(
       (10 *
-        (calcRate(bestValues.S, style + 0.1 * stats.style) +
-          calcRate(bestValues.B, bit + 0.1 * stats.flow) +
-          calcRate(bestValues.R, rhymes + 0.1 * stats.rhymes))) /
+        (calcRate(bestValues.S, style) +
+          calcRate(bestValues.B, bit) +
+          calcRate(bestValues.R, rhymes))) /
         3,
     ) / 10;
   // Obliczenie przyrostu fanów(na podstawie poprzedniej ilości fanów i oceny piosenki)
@@ -120,7 +194,6 @@ export const checkSong = (song, stats, setStats) => {
   checkedSong.fans = Math.floor(stats.fans * 0.3 + (1 + checkedSong.rating * 0.5));
 
   // Obliczenie zarobionych pieniędzy na podstawie wyświetleń
-  console.log(video.value);
   checkedSong.cash = Math.floor(checkedSong.views * 0.01 - video.value / 2);
   const reputation = calcRep(checkedSong.rating);
   setStats({
@@ -133,7 +206,32 @@ export const checkSong = (song, stats, setStats) => {
       reputation,
     },
   });
+  if (checkedSong.rating >= 9) {
+    if (checkedSong.views >= 1000000 && checkedSong.views < 23000000)
+      checkedSong.place = Math.floor(
+        ((checkedSong.views - 1000000) * (10 - 200)) / (23000000 - 1000000) + 200,
+      );
+    else if (checkedSong.views >= 23000000) {
+      checkedSong.performer = nick;
+      const itemOnList = constList.find(item => item.performer === checkedSong.performer);
+      if (itemOnList) {
+        if (itemOnList.views < checkedSong.views) {
+          const index = constList.findIndex(item => item.views < checkedSong.views);
+          checkedSong.place = index + 1;
+          changeBestList(checkedSong, index);
+        }
+      } else {
+        const index = constList.findIndex(item => item.views < checkedSong.views);
+        checkedSong.place = index + 1;
+        changeBestList(checkedSong, index);
+      }
+    }
 
-  setPersonalStats({ fans: checkedSong.fans, cash: checkedSong.cash, reputation });
+    setBestSong(checkedSong);
+  } else {
+    checkedSong.place = '--';
+  }
+
+  setPersonalStats({ fans: checkedSong.fans, cash: checkedSong.cash, reputation, stats });
   return checkedSong;
 };
