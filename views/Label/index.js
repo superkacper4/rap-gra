@@ -220,6 +220,7 @@ const Label = () => {
             yourRapersLocal={yourRapersLocal}
             setYourRapers={setYourRapers}
             yourRapers={context.state.yourRapers}
+            setStats={context.setStats}
           />
           <LabelDetails
             openLabelDetails={openLabelDetails}

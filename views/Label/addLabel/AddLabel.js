@@ -21,6 +21,7 @@ const AddLabel = ({
   yourRapersLocal,
   setYourRapers,
   yourRapers,
+  setStats,
 }) => {
   const storeData = async () => {
     try {
@@ -33,8 +34,7 @@ const AddLabel = ({
 
   const exitFn = () => {
     console.log(yourRapers);
-    const fn = () => addYourRaper(yourRapersLocal);
-    fn();
+    addYourRaper(yourRapersLocal);
     console.log(yourRapers);
     storeData();
     setYourRapers([]);
@@ -52,7 +52,12 @@ const AddLabel = ({
               yourRapers={yourRapersLocal}
             />
           ) : (
-            <CreateLabel onPress={onPress} labelFn={labelFn} yourLabelFn={yourLabelFn} />
+            <CreateLabel
+              onPress={onPress}
+              labelFn={labelFn}
+              yourLabelFn={yourLabelFn}
+              setStats={setStats}
+            />
           )}
 
           {/* {yourLabelName ? (

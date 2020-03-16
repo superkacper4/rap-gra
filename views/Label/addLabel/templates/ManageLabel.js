@@ -158,8 +158,6 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
 
     const index = rapers.findIndex(raper => raper.name === clickedRaper.name);
 
-    console.log(index);
-
     rapers.splice(index, 1);
   };
 

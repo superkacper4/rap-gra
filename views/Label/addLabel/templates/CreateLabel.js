@@ -13,7 +13,7 @@ const StyledWrapper = styled(View)`
   align-content: center;
 `;
 
-const CreateLabel = ({ onPress, labelFn, yourLabelFn }) => {
+const CreateLabel = ({ onPress, labelFn, yourLabelFn, setStats }) => {
   const [value, onChangeText] = React.useState('Nazwa wytwórni');
 
   const storeData = async () => {
@@ -30,13 +30,23 @@ const CreateLabel = ({ onPress, labelFn, yourLabelFn }) => {
     storeData();
     labelFn(value);
     yourLabelFn(value);
+    setStats({
+      cash: -2000,
+      stats: {
+        fans: 0,
+        flow: 0,
+        style: 0,
+        rhymes: 0,
+        reputation: 0,
+      },
+    });
     onPress();
   };
   return (
     <StyledWrapper>
       <Input onChangeText={text => onChangeText(text)} value={value} />
       <Paragraph>Koszt założenia własnej wytwórni to:</Paragraph>
-      <Paragraph>10000$</Paragraph>
+      <Paragraph>2000$</Paragraph>
       <Button title="potwierdź" onPress={buttonFn}>
         <Text>Potwierdź</Text>
       </Button>
