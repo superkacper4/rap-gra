@@ -72,6 +72,7 @@ class App extends React.Component {
       const rhymes = await AsyncStorage.getItem('rhymes');
       const concerts = await AsyncStorage.getItem('concerts_array');
       const yourLabel = await AsyncStorage.getItem('yourLabel');
+      const yourRapers = await AsyncStorage.getItem('yourRapers_array');
 
       //sprawdza warunek czy coś pobrał czy nie
       if (
@@ -99,6 +100,7 @@ class App extends React.Component {
           },
           currentLabel: label,
           yourLabel: yourLabel,
+          yourRapers: JSON.parse(yourRapers),
           concerts: JSON.parse(concerts),
         });
       }

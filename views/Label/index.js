@@ -175,7 +175,6 @@ const Label = () => {
 
   const openFn = value => {
     setAddLabel(!openAddLabel);
-    console.log('XD', value);
     setYourRapers(yourRapersLocal.concat(...value));
   };
 
@@ -220,6 +219,7 @@ const Label = () => {
             addYourRaper={context.addYourRaper}
             yourRapersLocal={yourRapersLocal}
             setYourRapers={setYourRapers}
+            yourRapers={context.state.yourRapers}
           />
           <LabelDetails
             openLabelDetails={openLabelDetails}

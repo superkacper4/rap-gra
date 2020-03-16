@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import AddPanelTemplate from 'rap-gra/templates/AddPanelTemplate';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import CreateLabel from './templates/CreateLabel';
 import ManageLabel from './templates/ManageLabel';
 
@@ -20,11 +20,25 @@ const AddLabel = ({
   addYourRaper,
   yourRapersLocal,
   setYourRapers,
+  yourRapers,
 }) => {
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem('yourRapers_array', JSON.stringify(yourRapers));
+      console.log('gitówka');
+    } catch (error) {
+      console.log('error', typeof value);
+    }
+  };
+
   const exitFn = () => {
-    addYourRaper(yourRapersLocal);
-    onPress();
+    console.log(yourRapers);
+    const fn = () => addYourRaper(yourRapersLocal);
+    fn();
+    console.log(yourRapers);
+    storeData();
     setYourRapers([]);
+    onPress();
   };
 
   return (
