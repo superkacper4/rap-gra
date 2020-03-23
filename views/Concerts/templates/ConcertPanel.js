@@ -18,7 +18,6 @@ const ConcertPanel = ({
   const [valueAlcohol, setValueAlcohol] = useState(0); // Ilość alko wypitego
   const [valueClubSize, setValueClubSize] = useState(0); // Wielkość klubu
   const [free, setFree] = useState(false); // Darmowe: tak czy nie
-  const [keyCounter, setKeyCounter] = useState(0); // Po kolei klucze wyznacza
   const [cost, setCost] = useState(0); // koszt koncertu
 
   const saveAsync = async array => {
@@ -61,8 +60,8 @@ const ConcertPanel = ({
       });
 
       array.push({
-        key: array.lenght,
-        name: keyCounter,
+        key: array.lenght + 1,
+        name: array.lenght,
         fansIncrease: concertStats[0],
         cashIncrease: concertStats[1],
         statsIncrease: concertStats[2],
@@ -76,7 +75,6 @@ const ConcertPanel = ({
       decreaseConcertsEnableToPlay();
 
       // czyszczenie wybranych danych
-      setKeyCounter(keyCounter + 1);
       setValueSound(0);
       setValueTicketsPrice(0);
       setValueAlcohol(0);
@@ -86,7 +84,6 @@ const ConcertPanel = ({
   };
 
   useEffect(() => {
-    // console.log("XD")
     setCost(checkCost(valueSound, valueAlcohol, valueClubSize));
   });
 
@@ -132,6 +129,7 @@ const ConcertPanel = ({
           <Button
             onPress={() => {
               buttonFn(context.state.concerts, context.state);
+              context.saveStats();
             }}
           >
             <Text>Zagraj koncert!</Text>

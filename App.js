@@ -46,6 +46,19 @@ class App extends React.Component {
     bestList: constList,
   };
 
+  saveStats = async () => {
+    try {
+      await AsyncStorage.setItem('fans', JSON.stringify(this.state.stats.fans));
+      await AsyncStorage.setItem('flow', JSON.stringify(this.state.stats.flow));
+      await AsyncStorage.setItem('style', JSON.stringify(this.state.stats.style));
+      await AsyncStorage.setItem('rhymes', JSON.stringify(this.state.stats.rhymes));
+      await AsyncStorage.setItem('rep', JSON.stringify(this.state.stats.reputation));
+      await AsyncStorage.setItem('cash', JSON.stringify(this.state.cash));
+    } catch (error) {
+      console.log('error zapis statystyk w APP');
+    }
+  };
+
   setStats = object => {
     const { fans, flow, style, rhymes, reputation } = object.stats;
     this.setState(prevState => ({
@@ -251,8 +264,6 @@ class App extends React.Component {
       labelFn,
       setSong,
       setRecord,
-      testFn,
-      testFn2,
       setStats,
       deleteAndAddSong,
       setCash,
@@ -264,6 +275,7 @@ class App extends React.Component {
       decreaseConcertsEnableToPlay,
       yourLabelFn,
       addYourRaper,
+      saveStats,
     } = this;
 
     return (
@@ -274,8 +286,6 @@ class App extends React.Component {
             labelFn,
             setSong,
             setRecord,
-            testFn,
-            testFn2,
             setStats,
             deleteAndAddSong,
             setCash,
@@ -287,6 +297,7 @@ class App extends React.Component {
             decreaseConcertsEnableToPlay,
             yourLabelFn,
             addYourRaper,
+            saveStats,
           }}
         >
           <ThemeProvider theme={theme}>
