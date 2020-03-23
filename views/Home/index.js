@@ -69,6 +69,10 @@ const Home = () => {
           <StyledStatValue>
             {context.state.isLoading ? 'Ładowanie...' : context.state.cash} $
           </StyledStatValue>
+          <StyledStatValue>
+            mnożnik: x
+            {context.state.isLoading ? 'Ładowanie...' : context.state.stats.labelMultipler}
+          </StyledStatValue>
           <StyledStats>
             <StyledNick>{context.state.isLoading ? 'Ładowanie...' : context.state.nick}</StyledNick>
             <ProgressBar name="flow" progress={context.state.stats.flow} />

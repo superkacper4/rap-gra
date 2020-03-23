@@ -34,18 +34,19 @@ const LabelDetails = ({
   clickedLabelProfits,
   labelFn,
   stats,
-
   currentLabel,
+  setLabelMultipler,
 }) => {
-  const storeData = async () => {
+  const storeData = async value => {
     try {
       await AsyncStorage.setItem('label', clickedLabelName);
+      await AsyncStorage.setItem('labelMultipler', JSON.stringify(value));
     } catch (error) {
       // console.log('error');
     }
   };
 
-  const buttonFn = () => {
+  const buttonFn = increase => {
     // funkcja sprawdza czy nie jesteś juz w danej wytwórnii, jeśli nie to sprawdza czy spełniasz kryteria i dodaje cię do niej
     if (currentLabel !== clickedLabelName) {
       if (
@@ -56,8 +57,9 @@ const LabelDetails = ({
         stats.style >= clickedLabelRequaierments.style
       ) {
         labelFn(clickedLabelName);
-        storeData();
+        storeData(increase);
         onPress();
+        setLabelMultipler(increase);
         Alert.alert(`Gratulacje dołączyłeś do ${clickedLabelName}!`);
       } else {
         Alert.alert('Nie spełniasz wymagań.');
@@ -86,7 +88,7 @@ const LabelDetails = ({
       <StyledText>Przyrost Reputacji: {clickedLabelProfits.reputationIncrease}x</StyledText>
       <StyledText>Przyrost Kasy: {clickedLabelProfits.cashIncrease}x</StyledText>
 
-      <Button onPress={buttonFn}>
+      <Button onPress={() => buttonFn(clickedLabelProfits.cashIncrease)}>
         <StyledText>Dołącz</StyledText>
       </Button>
     </AddPanelTemplate>

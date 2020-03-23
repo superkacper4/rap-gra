@@ -19,11 +19,12 @@ class App extends React.Component {
     pic: '',
     cash: 0,
     stats: {
-      fans: 0,
-      reputation: 0,
-      flow: 0,
-      style: 0,
-      rhymes: 0,
+      fans: 1000000,
+      reputation: 10000,
+      flow: 20,
+      style: 20,
+      rhymes: 20,
+      labelMultipler: 1,
     },
     // label
     currentLabel: '',
@@ -53,6 +54,7 @@ class App extends React.Component {
       await AsyncStorage.setItem('style', JSON.stringify(this.state.stats.style));
       await AsyncStorage.setItem('rhymes', JSON.stringify(this.state.stats.rhymes));
       await AsyncStorage.setItem('rep', JSON.stringify(this.state.stats.reputation));
+      await AsyncStorage.setItem('labelMultipler', JSON.stringify(this.state.stats.labelMultipler));
       await AsyncStorage.setItem('cash', JSON.stringify(this.state.cash));
     } catch (error) {
       console.log('error zapis statystyk w APP');
@@ -129,6 +131,7 @@ class App extends React.Component {
       const flow = await AsyncStorage.getItem('flow');
       const style = await AsyncStorage.getItem('style');
       const rhymes = await AsyncStorage.getItem('rhymes');
+      const labelMultipler = await AsyncStorage.getItem('labelMultipler');
       const concerts = await AsyncStorage.getItem('concerts_array');
       const sub = await AsyncStorage.getItem(`subjects`);
       const pic = await AsyncStorage.getItem('picture');
@@ -147,6 +150,7 @@ class App extends React.Component {
         flow !== null &&
         style !== null &&
         rhymes !== null &&
+        labelMultipler !== null &&
         rep !== null &&
         concerts !== null &&
         sub !== null &&
@@ -168,6 +172,7 @@ class App extends React.Component {
             flow: JSON.parse(flow),
             style: JSON.parse(style),
             rhymes: JSON.parse(rhymes),
+            labelMultipler: JSON.parse(labelMultipler),
           },
           currentLabel: label,
           yourLabel: yourLabel,
@@ -183,7 +188,9 @@ class App extends React.Component {
 
         this.changeBestList(JSON.parse(bestSong), JSON.parse(bestSong).place - 1);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log('dupa w wczytywanie AS w app');
+    }
     this.setState({ isLoading: false });
 
     // AsyncStorage.setItem('songsL', '0');
@@ -257,6 +264,16 @@ class App extends React.Component {
     }));
   };
 
+  // Ustala mnożnik jaki dostajemy za bycie w wytwórnii, lub za raperów z twojej wytwornii
+  setLabelMultipler = value => {
+    this.setState({
+      stats: {
+        ...this.state.stats,
+        labelMultipler: value,
+      },
+    });
+  };
+
   render() {
     const { HOME, LABEL, SONGS, ALLSONGS, ALLRECORDS, CONCERTS, STARTSCREEN, BESTSONGS } = path;
     const {
@@ -276,6 +293,7 @@ class App extends React.Component {
       yourLabelFn,
       addYourRaper,
       saveStats,
+      setLabelMultipler,
     } = this;
 
     return (
@@ -298,6 +316,7 @@ class App extends React.Component {
             yourLabelFn,
             addYourRaper,
             saveStats,
+            setLabelMultipler,
           }}
         >
           <ThemeProvider theme={theme}>

@@ -233,6 +233,7 @@ const Label = () => {
             labelFn={context.labelFn}
             stats={context.state.stats}
             currentLabel={context.state.currentLabel}
+            setLabelMultipler={context.setLabelMultipler}
           />
         </StyledWrapper>
       )}
