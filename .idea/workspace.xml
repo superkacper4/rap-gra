@@ -6,8 +6,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12af8f15-968c-4d50-aa51-561382fd01fa" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/Concerts/templates/ConcertPanel.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/Concerts/templates/ConcertPanel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/Label/addLabel/AddLabel.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/Label/addLabel/AddLabel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/Label/addLabel/templates/CreateLabel.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/Label/addLabel/templates/CreateLabel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/Label/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/Label/index.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +22,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="9" />
     <option name="y" value="47" />
     <option name="width" value="1400" />
@@ -66,7 +67,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="9" y="47" width="1400" height="757" extended-state="1" />
+    <frame x="9" y="47" width="1400" height="757" extended-state="0" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" weight="0.3298969" />

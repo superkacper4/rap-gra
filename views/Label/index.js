@@ -221,6 +221,7 @@ const Label = () => {
             setYourRapers={setYourRapers}
             yourRapers={context.state.yourRapers}
             setStats={context.setStats}
+            saveStats={context.saveStats}
           />
           <LabelDetails
             openLabelDetails={openLabelDetails}

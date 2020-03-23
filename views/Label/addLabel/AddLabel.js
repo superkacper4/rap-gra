@@ -22,6 +22,7 @@ const AddLabel = ({
   setYourRapers,
   yourRapers,
   setStats,
+  saveStats,
 }) => {
   const storeData = async () => {
     try {
@@ -57,6 +58,7 @@ const AddLabel = ({
               labelFn={labelFn}
               yourLabelFn={yourLabelFn}
               setStats={setStats}
+              saveStats={saveStats}
             />
           )}
 

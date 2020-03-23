@@ -13,7 +13,7 @@ const StyledWrapper = styled(View)`
   align-content: center;
 `;
 
-const CreateLabel = ({ onPress, labelFn, yourLabelFn, setStats }) => {
+const CreateLabel = ({ onPress, labelFn, yourLabelFn, setStats, saveStats }) => {
   const [value, onChangeText] = React.useState('Nazwa wytwórni');
 
   const storeData = async () => {
@@ -41,6 +41,7 @@ const CreateLabel = ({ onPress, labelFn, yourLabelFn, setStats }) => {
       },
     });
     onPress();
+    saveStats();
   };
   return (
     <StyledWrapper>
