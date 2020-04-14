@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import AppContext from 'rap-gra/context/context';
 import { ScrollView, View, Text } from 'react-native';
 import { Paragraph, Title, Button, RowContainer } from 'rap-gra/components';
 
@@ -137,7 +138,7 @@ const rapers = [
 ];
 
 const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
-  const [increase, setIncrease] = useState(1);
+  const context = useContext(AppContext);
 
   const compare = (a, b) => {
     if (a.key < b.key) {
@@ -152,7 +153,9 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
   const addToLabelFn = value => {
     const clickedRaper = rapers.find(raper => raper.name === value);
 
-    setIncrease(increase * clickedRaper.profits.fansIncrease);
+    context.setLabelMultipler(
+      context.state.stats.labelMultipler * clickedRaper.profits.fansIncrease,
+    );
 
     setYourRapers(yourRapers.concat(clickedRaper));
 
@@ -164,7 +167,9 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
   const removeFromLabelFn = value => {
     const clickedRaper = yourRapers.find(raper => raper.name === value);
 
-    setIncrease(increase / clickedRaper.profits.fansIncrease);
+    context.setLabelMultipler(
+      context.state.stats.labelMultipler / clickedRaper.profits.fansIncrease,
+    );
 
     setYourRapers(yourRapers.filter(raper => raper.name !== value));
     rapers.splice(clickedRaper.key, 0, clickedRaper);
@@ -185,7 +190,7 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
       </RowContainer>
       <View>
         <StyledText>Członkowie twojej wytwórni:</StyledText>
-        <StyledText>Mnożnik: x{increase}</StyledText>
+        <StyledText>Mnożnik: x{context.state.stats.labelMultipler}</StyledText>
         {yourRapers.map(raper => (
           <StyledRaperTile key={raper.key}>
             <StyledText>{raper.name}</StyledText>

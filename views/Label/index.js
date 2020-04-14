@@ -234,6 +234,7 @@ const Label = () => {
             stats={context.state.stats}
             currentLabel={context.state.currentLabel}
             setLabelMultipler={context.setLabelMultipler}
+            yourLabel={context.yourLabel}
           />
         </StyledWrapper>
       )}

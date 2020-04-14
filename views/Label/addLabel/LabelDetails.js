@@ -36,6 +36,7 @@ const LabelDetails = ({
   stats,
   currentLabel,
   setLabelMultipler,
+  yourLabel,
 }) => {
   const storeData = async value => {
     try {
@@ -48,7 +49,7 @@ const LabelDetails = ({
 
   const buttonFn = increase => {
     // funkcja sprawdza czy nie jesteś juz w danej wytwórnii, jeśli nie to sprawdza czy spełniasz kryteria i dodaje cię do niej
-    if (currentLabel !== clickedLabelName) {
+    if (currentLabel !== clickedLabelName && yourLabel === false) {
       if (
         stats.fans >= clickedLabelRequaierments.fans &&
         stats.reputation >= clickedLabelRequaierments.reputation &&
@@ -66,7 +67,7 @@ const LabelDetails = ({
         onPress();
       }
     } else {
-      Alert.alert('Już jesteś w tej wytwórni ziomek XD');
+      Alert.alert('Już jesteś w tej wytwórni lub masz swoją.');
       onPress();
     }
   };
