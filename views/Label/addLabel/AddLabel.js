@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import AppContext from 'rap-gra/context/context';
 import AddPanelTemplate from 'rap-gra/templates/AddPanelTemplate';
 import { View, AsyncStorage } from 'react-native';
 import CreateLabel from './templates/CreateLabel';
@@ -24,9 +25,14 @@ const AddLabel = ({
   setStats,
   saveStats,
 }) => {
+  const context = useContext(AppContext);
   const storeData = async () => {
     try {
       await AsyncStorage.setItem('yourRapers_array', JSON.stringify(yourRapers));
+      await AsyncStorage.setItem(
+        'labelMultipler',
+        JSON.stringify(context.state.stats.labelMultipler),
+      );
       console.log('gitówka');
     } catch (error) {
       console.log('error', typeof value);

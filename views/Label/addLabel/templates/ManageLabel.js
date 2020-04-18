@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import AppContext from 'rap-gra/context/context';
 import { ScrollView, View, Text } from 'react-native';
 import { Paragraph, Title, Button, RowContainer } from 'rap-gra/components';
+import ChangeName from './menageElements/ChangeName';
 
 const StyledWrapper = styled(ScrollView)`
   width: 100%;
@@ -139,6 +140,7 @@ const rapers = [
 
 const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
   const context = useContext(AppContext);
+  const [changeNameDisplay, setChangeNameDisplay] = useState(true);
 
   const compare = (a, b) => {
     if (a.key < b.key) {
@@ -172,7 +174,6 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
     );
 
     setYourRapers(yourRapers.filter(raper => raper.name !== value));
-    rapers.splice(clickedRaper.key, 0, clickedRaper);
 
     rapers.sort(compare);
   };
@@ -181,13 +182,21 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
     <StyledWrapper>
       <Title> {yourLabelName} </Title>
       <RowContainer>
-        <StyledButton>
+        <StyledButton onPress={() => setChangeNameDisplay(!changeNameDisplay)}>
+          {/* <StyledButton> */}
           <Paragraph>Zmień nazwe</Paragraph>
         </StyledButton>
+
         <StyledButton>
           <Paragraph>Usuń wytwórnię</Paragraph>
         </StyledButton>
       </RowContainer>
+
+      <ChangeName
+        changeNameDisplay={changeNameDisplay}
+        setChangeNameDisplay={setChangeNameDisplay}
+      />
+
       <View>
         <StyledText>Członkowie twojej wytwórni:</StyledText>
         <StyledText>Mnożnik: x{context.state.stats.labelMultipler}</StyledText>
@@ -202,29 +211,31 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
       </View>
       <View>
         <StyledText>Raperzy którzy mogą chcieć dołączyć:</StyledText>
-        {rapers.map(raper => (
-          <StyledRaperTile key={raper.key}>
-            <StyledText>{raper.name}</StyledText>
-            <StyledRaperStats>
-              <Paragraph>Wymagania: </Paragraph>
-              <Paragraph>Fani: {raper.requaierments.fans}</Paragraph>
-              <Paragraph>Reputacja: {raper.requaierments.reputation}</Paragraph>
-              <Paragraph>Flow: {raper.requaierments.flow}</Paragraph>
-              <Paragraph>Style: {raper.requaierments.style}</Paragraph>
-              <Paragraph>Rymy: {raper.requaierments.rhymes}</Paragraph>
-            </StyledRaperStats>
-            <StyledRaperStats>
-              <Paragraph>Przywileje: </Paragraph>
-              <Paragraph>Przyrost fanów: {raper.profits.fansIncrease}</Paragraph>
-              <Paragraph>Przyrost reputacji: {raper.profits.reputationIncrease}</Paragraph>
-              <Paragraph>Przyrost kasy: {raper.profits.cashIncrease}</Paragraph>
-            </StyledRaperStats>
+        {rapers
+          .filter(({ name: name1 }) => !yourRapers.some(({ name: name2 }) => name2 === name1))
+          .map(raper => (
+            <StyledRaperTile key={raper.key}>
+              <StyledText>{raper.name}</StyledText>
+              <StyledRaperStats>
+                <Paragraph>Wymagania: </Paragraph>
+                <Paragraph>Fani: {raper.requaierments.fans}</Paragraph>
+                <Paragraph>Reputacja: {raper.requaierments.reputation}</Paragraph>
+                <Paragraph>Flow: {raper.requaierments.flow}</Paragraph>
+                <Paragraph>Style: {raper.requaierments.style}</Paragraph>
+                <Paragraph>Rymy: {raper.requaierments.rhymes}</Paragraph>
+              </StyledRaperStats>
+              <StyledRaperStats>
+                <Paragraph>Przywileje: </Paragraph>
+                <Paragraph>Przyrost fanów: {raper.profits.fansIncrease}</Paragraph>
+                <Paragraph>Przyrost reputacji: {raper.profits.reputationIncrease}</Paragraph>
+                <Paragraph>Przyrost kasy: {raper.profits.cashIncrease}</Paragraph>
+              </StyledRaperStats>
 
-            <StyledAddButton onPress={() => addToLabelFn(raper.name)}>
-              <Paragraph>+</Paragraph>
-            </StyledAddButton>
-          </StyledRaperTile>
-        ))}
+              <StyledAddButton onPress={() => addToLabelFn(raper.name)}>
+                <Paragraph>+</Paragraph>
+              </StyledAddButton>
+            </StyledRaperTile>
+          ))}
       </View>
     </StyledWrapper>
   );

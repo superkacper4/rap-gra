@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Text, View, AsyncStorage } from 'react-native';
 import { Input, Button, Paragraph } from 'rap-gra/components';
@@ -14,7 +14,7 @@ const StyledWrapper = styled(View)`
 `;
 
 const CreateLabel = ({ onPress, labelFn, yourLabelFn, setStats, saveStats }) => {
-  const [value, onChangeText] = React.useState('Nazwa wytwórni');
+  const [value, onChangeText] = useState('Nazwa wytwórni');
 
   const storeData = async () => {
     try {
