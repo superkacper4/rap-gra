@@ -250,6 +250,12 @@ class App extends React.Component {
     // }))
   };
 
+  resetYourRapers = () => {
+    this.setState({
+      yourRapers: [],
+    });
+  };
+
   // Funkcja obsługująca ile koncertów można zagrać pod rząd
   setConcertsEnableToPlay = value => {
     this.setState({
@@ -293,6 +299,7 @@ class App extends React.Component {
       decreaseConcertsEnableToPlay,
       yourLabelFn,
       addYourRaper,
+      resetYourRapers,
       saveStats,
       setLabelMultipler,
     } = this;
@@ -316,6 +323,7 @@ class App extends React.Component {
             decreaseConcertsEnableToPlay,
             yourLabelFn,
             addYourRaper,
+            resetYourRapers,
             saveStats,
             setLabelMultipler,
           }}

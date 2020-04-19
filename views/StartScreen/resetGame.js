@@ -23,6 +23,7 @@ export const resetGame = async (name, pic, func) => {
     await AsyncStorage.setItem('newSubCount', JSON.stringify({ e: 0, l: 0 }));
     await AsyncStorage.setItem('bestSong', JSON.stringify({ views: -1 }));
     await AsyncStorage.setItem('yourLabel', '');
+    await AsyncStorage.setItem('yourRapers_array', JSON.stringify([]));
   } catch (error) {
     throw new Error(error);
   }

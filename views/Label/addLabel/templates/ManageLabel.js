@@ -4,7 +4,6 @@ import AppContext from 'rap-gra/context/context';
 import { ScrollView, View, Text } from 'react-native';
 import { Paragraph, Title, Button, RowContainer } from 'rap-gra/components';
 import ChangeName from './menageElements/ChangeName';
-import DeleteLabel from './menageElements/DeleteLabel';
 
 const StyledWrapper = styled(ScrollView)`
   width: 100%;
@@ -147,7 +146,6 @@ const rapers = [
 const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
   const context = useContext(AppContext);
   const [changeNameDisplay, setChangeNameDisplay] = useState(true);
-  const [deleteYourLabelDisplay, setDeleteYourLabelDisplay] = useState(true);
 
   const compare = (a, b) => {
     if (a.key < b.key) {
@@ -204,20 +202,11 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
         <StyledButton onPress={() => setChangeNameDisplay(!changeNameDisplay)}>
           <Paragraph>Zmień nazwe</Paragraph>
         </StyledButton>
-
-        <StyledButton onPress={() => setDeleteYourLabelDisplay(!deleteYourLabelDisplay)}>
-          <Paragraph>Usuń wytwórnię</Paragraph>
-        </StyledButton>
       </RowContainer>
 
       <ChangeName
         changeNameDisplay={changeNameDisplay}
         setChangeNameDisplay={setChangeNameDisplay}
-      />
-
-      <DeleteLabel
-        deleteYourLabelDisplay={deleteYourLabelDisplay}
-        setDeleteYourLabelDisplay={setDeleteYourLabelDisplay}
       />
 
       <View>

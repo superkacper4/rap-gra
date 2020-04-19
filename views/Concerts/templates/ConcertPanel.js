@@ -56,6 +56,7 @@ const ConcertPanel = ({
           style: concertStats[2],
           rhymes: concertStats[2],
           reputation: concertStats[3],
+          labelMultipler: 0,
         },
       });
 

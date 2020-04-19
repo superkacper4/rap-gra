@@ -26,6 +26,8 @@ const DeleteLabel = ({ deleteYourLabelDisplay, setDeleteYourLabelDisplay }) => {
     try {
       await AsyncStorage.setItem('label', '');
       await AsyncStorage.setItem('yourLabel', '');
+      await AsyncStorage.setItem('yourRapers_array', JSON.stringify([]));
+
       console.log('gitówka');
     } catch (error) {
       console.log('error', typeof value);
@@ -35,6 +37,8 @@ const DeleteLabel = ({ deleteYourLabelDisplay, setDeleteYourLabelDisplay }) => {
   const buttonFn = () => {
     context.yourLabelFn('');
     context.labelFn('');
+    context.resetYourRapers();
+    context.setLabelMultipler(1);
     setDeleteYourLabelDisplay(!deleteYourLabelDisplay);
     storeData();
   };

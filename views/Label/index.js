@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AppContext from 'rap-gra/context/context';
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Paragraph, Button, Title } from 'rap-gra/components';
+import DeleteLabel from './addLabel/templates/menageElements/DeleteLabel';
 import AddLabel from './addLabel/AddLabel';
 import LabelDetails from './addLabel/LabelDetails';
 
@@ -51,11 +52,11 @@ const labels = [
     history:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     requaierments: {
-      fans: 10000,
-      reputation: 1000,
-      flow: 15,
-      style: 15,
-      rhymes: 15,
+      fans: 0,
+      reputation: 0,
+      flow: 1,
+      style: 1,
+      rhymes: 1,
     },
     profits: {
       fansIncrease: 2,
@@ -162,6 +163,7 @@ const Label = () => {
   const [clickedLabelHistory, setClickedLabelHistory] = useState('');
   const [clickedLabelRequaierments, setClickedLabelRequaierments] = useState('');
   const [clickedLabelProfits, setClickedLabelProfits] = useState('');
+  const [deleteYourLabelDisplay, setDeleteYourLabelDisplay] = useState(true);
 
   const [yourRapersLocal, setYourRapers] = useState([]);
 
@@ -185,6 +187,15 @@ const Label = () => {
           <StyledTitle>Wytwórnie</StyledTitle>
           <StyledText>Obecna wytwórnia: {context.state.currentLabel}</StyledText>
           <StyledText>Nazwa twojej wytrwórni: {context.state.yourLabel}</StyledText>
+
+          <StyledButton onPress={() => setDeleteYourLabelDisplay(!deleteYourLabelDisplay)}>
+            <Paragraph>Usuń/opuść wytwórnię</Paragraph>
+          </StyledButton>
+
+          <DeleteLabel
+            deleteYourLabelDisplay={deleteYourLabelDisplay}
+            setDeleteYourLabelDisplay={setDeleteYourLabelDisplay}
+          />
 
           {labels.map(label => (
             <StyledLabelTile key={label.key} onPress={() => buttonFn(label)}>
@@ -234,7 +245,7 @@ const Label = () => {
             stats={context.state.stats}
             currentLabel={context.state.currentLabel}
             setLabelMultipler={context.setLabelMultipler}
-            yourLabel={context.yourLabel}
+            yourLabel={context.state.yourLabel}
           />
         </StyledWrapper>
       )}
