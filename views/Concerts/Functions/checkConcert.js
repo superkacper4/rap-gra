@@ -10,18 +10,22 @@ export const checkConcert = (
   let cashIncrease;
   let skillsIncrease;
   let reputationIncrease;
+  let alcoholMultipler;
+
+  const freeMultipler = 1.5;
 
   /*eslint-disable */
 
   if (valueAlcohol >= 30 && valueAlcohol <= 32.5) {
-    // idealna wartość alkoholu, 1,5 bonus
+    alcoholMultipler = 1.5; // idealna wartość alkoholu, 1,5 bonus
     if (free) {
       // darmowe daje bonus do przyrostu fanów i reputacji o wartości 1.5, brak zarobku, NIE wpłytwa na skille
       fansIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.5 *
-          1.5 *
+          alcoholMultipler *
+          freeMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4; // losuje ilu fanów przybwa po koncercie, mnożnik *1,5 bo darmowe
       cashIncrease = 0; // darmowy koncert to nic nie zarobione
@@ -29,15 +33,16 @@ export const checkConcert = (
       reputationIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.5 *
-          1.5 *
+          alcoholMultipler *
+          freeMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
     } else {
       fansIncrease =
         (Math.random() *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.5 *
+          alcoholMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
       cashIncrease = 20 * fansIncrease; // cena biletu to 20 to kasy tyle ile fanów kupiło bilety
@@ -45,7 +50,7 @@ export const checkConcert = (
       reputationIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.5 *
+          alcoholMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
     }
@@ -53,13 +58,14 @@ export const checkConcert = (
     (valueAlcohol >= 20 && valueAlcohol < 30) ||
     (valueAlcohol > 32.5 && valueAlcohol <= 39)
   ) {
-    // za mało alkoholu trochę lub za dużo trochę, bonus 1.35
+    alcoholMultipler = 1.35; // za mało alkoholu trochę lub za dużo trochę, bonus 1.35
     if (free) {
       fansIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.35 *
-          1.5 *
+          alcoholMultipler *
+          freeMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4; // losuje ilu fanów przybwa po koncercie, mnożnik *1,5 bo darmowe
       cashIncrease = 0; // darmowy koncert to nic nie zarobione
@@ -67,15 +73,17 @@ export const checkConcert = (
       reputationIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.35 *
-          1.5 *
+          alcoholMultipler *
+          freeMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
     } else {
       fansIncrease =
         (Math.random() *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.35 *
+          alcoholMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
       cashIncrease = 20 * fansIncrease; // cena biletu to 20 to kasy tyle ile fanów kupiło bilety
@@ -83,7 +91,8 @@ export const checkConcert = (
       reputationIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.35 *
+          alcoholMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
     }
@@ -91,13 +100,14 @@ export const checkConcert = (
     (valueAlcohol >= 0 && valueAlcohol < 20) ||
     (valueAlcohol > 39 && valueAlcohol <= 59)
   ) {
-    // dużo za mało lub za dużo, bonus 1.1
+    alcoholMultipler = 1.1; // dużo za mało lub za dużo, bonus 1.1
     if (free) {
       fansIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.1 *
-          1.5 *
+          alcoholMultipler *
+          freeMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4; // losuje ilu fanów przybwa po koncercie, mnożnik *1,5 bo darmowe
       cashIncrease = 0; // darmowy koncert to nic nie zarobione
@@ -105,15 +115,17 @@ export const checkConcert = (
       reputationIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.1 *
-          1.5 *
+          alcoholMultipler *
+          freeMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
     } else {
       fansIncrease =
         (Math.random() *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.1 *
+          alcoholMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
       cashIncrease = 20 * fansIncrease; // cena biletu to 20 to kasy tyle ile fanów kupiło bilety
@@ -121,7 +133,7 @@ export const checkConcert = (
       reputationIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.1 *
+          alcoholMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
     }
@@ -131,7 +143,8 @@ export const checkConcert = (
       fansIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.5 *
+          freeMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4; // losuje ilu fanów przybwa po koncercie, mnożnik *1,5 bo darmowe
       cashIncrease = 0; // darmowy koncert to nic nie zarobione
@@ -139,7 +152,8 @@ export const checkConcert = (
       reputationIncrease =
         ((Math.random() + 1 - 0.9999) *
           ((stats.flow + stats.style + stats.rhymes) / 3) *
-          1.5 *
+          freeMultipler *
+          stats.labelMultipler *
           (valueClubSize + valueTicketsPrice + valueSound)) /
         4;
     } else {
