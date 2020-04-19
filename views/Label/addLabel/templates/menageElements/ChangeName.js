@@ -35,7 +35,7 @@ const ChangeName = ({ changeNameDisplay, setChangeNameDisplay }) => {
 
   const buttonFn = name => {
     context.yourLabelFn(name);
-    context.yourLabelFn(name);
+    context.labelFn(name);
     setChangeNameDisplay(!changeNameDisplay);
     storeData();
   };
