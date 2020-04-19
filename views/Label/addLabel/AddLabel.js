@@ -33,6 +33,7 @@ const AddLabel = ({
         'labelMultipler',
         JSON.stringify(context.state.stats.labelMultipler),
       );
+      await AsyncStorage.setItem('cash', JSON.stringify(context.state.cash));
       console.log('gitówka');
     } catch (error) {
       console.log('error', typeof value);

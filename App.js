@@ -62,7 +62,7 @@ class App extends React.Component {
   };
 
   setStats = object => {
-    const { fans, flow, style, rhymes, reputation } = object.stats;
+    const { fans, flow, style, rhymes, reputation, labelMultipler } = object.stats;
     this.setState(prevState => ({
       cash: prevState.cash + object.cash,
       stats: {
@@ -71,6 +71,7 @@ class App extends React.Component {
         style: prevState.stats.style + style,
         rhymes: prevState.stats.rhymes + rhymes,
         reputation: prevState.stats.reputation + reputation,
+        labelMultipler: prevState.stats.labelMultipler + labelMultipler,
       },
     }));
   };

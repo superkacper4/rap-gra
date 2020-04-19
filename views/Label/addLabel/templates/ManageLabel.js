@@ -65,6 +65,7 @@ const rapers = [
       flow: 75,
       style: 65,
       rhymes: 35,
+      cost: 100,
     },
     profits: {
       fansIncrease: 2,
@@ -81,6 +82,7 @@ const rapers = [
       flow: 25,
       style: 25,
       rhymes: 35,
+      cost: 100,
     },
     profits: {
       fansIncrease: 1.5,
@@ -97,6 +99,7 @@ const rapers = [
       flow: 25,
       style: 25,
       rhymes: 35,
+      cost: 100,
     },
     profits: {
       fansIncrease: 1.5,
@@ -113,6 +116,7 @@ const rapers = [
       flow: 25,
       style: 25,
       rhymes: 35,
+      cost: 100,
     },
     profits: {
       fansIncrease: 1.5,
@@ -129,6 +133,7 @@ const rapers = [
       flow: 25,
       style: 25,
       rhymes: 35,
+      cost: 100,
     },
     profits: {
       fansIncrease: 2.5,
@@ -159,6 +164,18 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
       context.state.stats.labelMultipler * clickedRaper.profits.fansIncrease,
     );
 
+    context.setStats({
+      cash: -clickedRaper.requaierments.cost,
+      stats: {
+        fans: 0,
+        flow: 0,
+        style: 0,
+        rhymes: 0,
+        reputation: 0,
+        labelMultipler: 0,
+      },
+    });
+
     setYourRapers(yourRapers.concat(clickedRaper));
 
     const index = rapers.findIndex(raper => raper.name === clickedRaper.name);
@@ -183,7 +200,6 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
       <Title> {yourLabelName} </Title>
       <RowContainer>
         <StyledButton onPress={() => setChangeNameDisplay(!changeNameDisplay)}>
-          {/* <StyledButton> */}
           <Paragraph>Zmień nazwe</Paragraph>
         </StyledButton>
 
@@ -221,8 +237,7 @@ const ManageLabel = ({ yourLabelName, setYourRapers, yourRapers }) => {
                 <Paragraph>Fani: {raper.requaierments.fans}</Paragraph>
                 <Paragraph>Reputacja: {raper.requaierments.reputation}</Paragraph>
                 <Paragraph>Flow: {raper.requaierments.flow}</Paragraph>
-                <Paragraph>Style: {raper.requaierments.style}</Paragraph>
-                <Paragraph>Rymy: {raper.requaierments.rhymes}</Paragraph>
+                <Paragraph>Koszt dodania: {raper.requaierments.cost}</Paragraph>
               </StyledRaperStats>
               <StyledRaperStats>
                 <Paragraph>Przywileje: </Paragraph>

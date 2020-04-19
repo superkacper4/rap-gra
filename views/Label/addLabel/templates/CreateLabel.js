@@ -38,6 +38,7 @@ const CreateLabel = ({ onPress, labelFn, yourLabelFn, setStats, saveStats }) => 
         style: 0,
         rhymes: 0,
         reputation: 0,
+        labelMultipler: 0,
       },
     });
     onPress();
